@@ -15,6 +15,12 @@ imagemagick = path.join(imagemagick, 'imagemagick', 'convert.exe')
 
 
 def convert():
+    # Check if app is in another process
+    from subprocess import check_output
+    s = check_output('tasklist', shell=True)
+    if s.count(b"pymanga") > 1:
+        fatal("Pymanga is already running on another process!")
+
     # Prompt for archive
     command = [imagemagick]
     file = selectzip("Open archive to use:")
