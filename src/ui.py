@@ -1,45 +1,50 @@
-from tkinter import messagebox, Label, Tk
+from tkinter import messagebox, Label, Tk, simpledialog
 from tkinter.ttk import Progressbar
-import os
+from os import path, _exit
 import sys
 import traceback
 
 title = "pymanga | .zip to .pdf"
-spin = True
 
 # Start window and set icon
 root = Tk()
 root.title(title)
-path = ""
+icon = ""
 if getattr(sys, 'frozen', False):
-    path = os.path.dirname(sys.executable)
+    icon = path.dirname(sys.executable)
 elif __file__:
-    path = os.path.dirname(__file__)
-    path = os.path.dirname(path[:-1])
-icon = os.path.join(path, 'app.ico')
+    icon = path.dirname(__file__)
+    icon = path.dirname(icon[:-1])
+icon = path.join(icon, 'app.ico')
 root.iconbitmap(icon)
 root.geometry("250x100")
 
 _label = None
+_p = None
 
-# Top space
-tpre = Label(root, text='')
-tpre.pack()
 
-# Main text
-t = Label(root, text="Cargando...", font=('helvetica', 12, 'bold'))
-t.pack()
-_label = t
+def paint():
+    global _label, _p
 
-# Spinner
-p = Progressbar(root, length=200,
-                mode="indeterminate", takefocus=True, maximum=100)
-p.pack()
-p.start()
+    # Top space
+    tpre = Label(root, text='')
+    tpre.pack()
 
-# Bottom space
-tpost = Label(root, text='')
-tpost.pack()
+    # Main text
+    t = Label(root, text="Cargando...", font=('helvetica', 12, 'bold'))
+    t.pack()
+    _label = t
+
+    # Spinner
+    p = Progressbar(root, length=200,
+                    mode="indeterminate", takefocus=True, maximum=100)
+    p.pack()
+    p.start()
+    _p = p
+
+    # Bottom space
+    tpost = Label(root, text='')
+    tpost.pack()
 
 
 def label(msg):
@@ -51,18 +56,30 @@ def loop():
 
 
 def fatal(msg, e=None):
-    global spin
-    spin = False
+    global _p
+    _p.stop()
     if e != None:
         traceback.print_exc()
         msg += "\n\n" + str(e)
     messagebox.showerror(message=msg, title=title)
-    os._exit(1)
+    _exit(1)
 
 
 def confirm(title, msg):
-    global spin
-    spin = False
+    global _p
+    _p.stop()
     answer = messagebox.askquestion(title, msg, icon='question')
-    spin = True
+    _p.start()
+    return answer
+
+
+def ask(title, msg):
+    global _p
+    _p.stop()
+    prompt = Tk()
+    prompt.overrideredirect(1)
+    prompt.withdraw()
+    answer = simpledialog.askstring(title, msg, parent=prompt)
+    prompt.destroy()
+    _p.start()
     return answer

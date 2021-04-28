@@ -1,21 +1,17 @@
-import os
-import tempfile
+from os import path
+from tempfile import gettempdir
+from shutil import rmtree
 from src.ui import fatal, label
 
-try:
-    temp = os.path.join(tempfile.gettempdir(), "pymanga")
-    if not os.path.exists(temp):
-        os.makedirs(temp)
-    print(temp)
-except Exception as e:
-    fatal("No se puede abrir el directorio temporal:", e=e)
+temp = path.join(gettempdir(), "pymanga\\")
+print(temp)
 
 
 def clean():
-    label("Limpiando archivos viejos...")
-    for f in os.listdir(temp):
-        f = os.path.join(temp, f)
-        try:
-            os.remove(f)
-        except:
-            pass
+    label("Cleaning temp directory...")
+    try:
+        rmtree(temp)
+    except Exception as e:
+        if type(e) != FileNotFoundError:
+            fatal("Can't access temp directory!", e=e)
+        pass

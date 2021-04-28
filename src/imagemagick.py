@@ -1,43 +1,34 @@
-import os
+from os import path, startfile, _exit, getcwd
+from subprocess import Popen, PIPE, STDOUT
+from src.temp import temp
+from src.ui import label, confirm, fatal
+import src.zip as zip
+from time import sleep
 import sys
-import wget
-from src.temp import temp, clean
-from src.ui import label, p
 
-download = 'https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-7.0.11-9-portable-Q16-x86.zip'
-
-path = ""
+imagemagick = ""
 if getattr(sys, 'frozen', False):
-    path = os.path.dirname(sys.executable)
+    imagemagick = path.dirname(sys.executable)
 elif __file__:
-    path = os.path.dirname(__file__)
-    path = os.path.dirname(path[:-1])
-imagemagick = os.path.join(path, 'imagemagick')
+    imagemagick = path.dirname(__file__)
+    imagemagick = path.dirname(imagemagick[:-1])
+imagemagick = path.join(imagemagick, 'imagemagick', 'convert.exe')
 
 
-def check():
-    if not os.path.isfile(os.path.join(imagemagick, 'convert.exe')):
-        clean()
-        label("Downloading ImageMagick...")
-        p.stop()
-        os.chdir(temp)
-        out = wget.download(download, out=temp, bar=_progress)
-        print(out)
-        p.start()
-
-
-_lastprogress = 0
-
-
-def _progress(current, total, width):
-    global _lastprogress
-    progress = int(100*current/total)
-    if progress == _lastprogress:
-        return
-    increment = progress-_lastprogress
-    p.step(increment)
-    _lastprogress = progress
-
-# print("Saving pdf as '" + os.path.basename(os.getcwd()) + ".pdf'")
-# command.append(os.path.basename(os.getcwd()) + ".pdf")
-# subprocess.run(command)
+def convert(file):
+    command = [imagemagick]
+    files, skipped = zip.read(file)
+    if len(skipped):
+        confirm("The following files will not be included:", str(skipped))
+    label("Creating .pdf file...")
+    command.extend(files)
+    outFile = path.join(temp, path.basename(getcwd()) + ".pdf")
+    command.append(outFile)
+    p = Popen(command, stdin=PIPE, stdout=PIPE, stderr=STDOUT, encoding='UTF8')
+    while p.poll() is None:
+        sleep(1)
+    response = p.stdout.readline()
+    if response != "":
+        fatal("Can't convert to pdf!", response)
+    startfile(outFile, 'open')
+    _exit(1)
