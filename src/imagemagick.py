@@ -1,11 +1,10 @@
-from os import path, startfile, _exit, getcwd
-from subprocess import Popen, PIPE, STDOUT
+from os import path
 from src.temp import temp
-from src.ui import label, confirm, fatal
+from src.ui import label, confirm, fatal, selectzip
 import src.zip as zip
-from time import sleep
 import sys
 
+# Get path of imagemagick
 imagemagick = ""
 if getattr(sys, 'frozen', False):
     imagemagick = path.dirname(sys.executable)
@@ -15,20 +14,46 @@ elif __file__:
 imagemagick = path.join(imagemagick, 'imagemagick', 'convert.exe')
 
 
-def convert(file):
+def convert():
+    # Prompt for archive
     command = [imagemagick]
+    file = selectzip("Open archive to use:")
+
+    # Extract and read pdf file
     files, skipped = zip.read(file)
     if len(skipped):
         confirm("The following files will not be included:", str(skipped))
-    label("Creating .pdf file...")
+    label("Creating pdf file...")
     command.extend(files)
+
+    # Add output file to command
+    from pathlib import Path
+    from os import getcwd
     outFile = path.join(temp, path.basename(getcwd()) + ".pdf")
     command.append(outFile)
+
+    # Convert file using ImageMagick
+    from subprocess import Popen, PIPE, STDOUT
     p = Popen(command, stdin=PIPE, stdout=PIPE, stderr=STDOUT, encoding='UTF8')
+
+    # Wait for process to finish
+    from time import sleep
     while p.poll() is None:
         sleep(1)
     response = p.stdout.readline()
     if response != "":
         fatal("Can't convert to pdf!", response)
-    startfile(outFile, 'open')
+
+    # Open pdf file with default editor
+    if confirm("Save file", "Do you want to save the pdf to the Desktop?"):
+        outFile2 = path.join(Path.home(), "Desktop", path.basename(getcwd()) + ".pdf")
+        from shutil import copy2
+        try:
+            copy2(outFile, outFile2)
+        except Exception as e:
+            fatal("Error copying file!", e=e)
+    else:
+        from os import startfile
+        startfile(outFile, 'open')
+    from os import _exit
     _exit(1)

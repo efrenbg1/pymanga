@@ -6,7 +6,7 @@
         {
             "label": "Run",
             "type": "process",
-            "command": "${config:python.pythonPath}",
+            "command": "${config:python.pythonPath}\\python.exe",
             "args": [
                 "pymanga.py",
                 "C:\\Users\\efrenbg1\\Downloads\\Again!!!\\Vol 1.rar"
@@ -24,8 +24,9 @@
                 "-y",
                 "--noconsole",
                 "--add-data=app.ico;.",
+                "--add-data=imagemagick/*;imagemagick",
                 "--icon=app.ico",
-                "basa3pdf.py"
+                "pymanga.py"
             ]
         }
     ]

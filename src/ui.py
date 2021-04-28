@@ -1,4 +1,4 @@
-from tkinter import messagebox, Label, Tk, simpledialog
+from tkinter import messagebox, Label, Tk, simpledialog, filedialog
 from tkinter.ttk import Progressbar
 from os import path, _exit
 import sys
@@ -81,5 +81,17 @@ def ask(title, msg):
     prompt.withdraw()
     answer = simpledialog.askstring(title, msg, parent=prompt)
     prompt.destroy()
+    _p.start()
+    return answer
+
+
+def selectzip(title):
+    global _p
+    _p.stop()
+    from pathlib import Path
+    answer = filedialog.askopenfilename(title=title, initialdir=str(Path.home()), filetypes=(
+        ('Archive', '*.zip'),
+        ('All files', '*.*')
+    ))
     _p.start()
     return answer

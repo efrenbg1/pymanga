@@ -1,6 +1,3 @@
-import re
-from os import chdir, listdir
-from zipfile import ZipFile
 from src.temp import temp, clean
 from src.ui import ask, fatal, label
 
@@ -10,38 +7,45 @@ def _atoi(text):
 
 
 def _natural_keys(text):
+    import re
     return [_atoi(c) for c in re.split(r'(\d+)', text)]
 
 
 def _extract(file):
+    # Clean temp directory
     clean()
+
+    # Extract zip file (if fails prompt for password)
     label("Extracting archive...")
+    from zipfile import ZipFile
     archive = ZipFile(file)
     password = ""
     while True:
         try:
             archive.extractall(temp, pwd=bytes(password, 'utf-8'))
             break
-        except Exception as e:
-            print(e)
+        except:
             password = ask("Password", "The file is encrypted and needs a password:")
-            print(password)
             if password == None:
                 fatal("Password is needed to extract archive!")
             pass
 
 
 def read(file):
+    # Extract archive
     try:
         _extract(file)
     except Exception as e:
         fatal("Can't open archive file!", e=e)
 
+    # Find extracted folder
+    from os import chdir, listdir
     chdir(temp)
     for folder in listdir():
         if folder in file:
             chdir(folder)
 
+    # Get list of files to use for pdf (and those ignored)
     files = []
     skipped = []
     chapters = listdir()
