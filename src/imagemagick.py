@@ -34,8 +34,11 @@ def convert():
 
     # Add output file to command
     from pathlib import Path
-    from os import getcwd
-    outFile = path.join(temp, path.basename(getcwd()) + ".pdf")
+    outFile = path.basename(file)
+    if "." in outFile:
+        outFile = outFile.split(".")[0]
+    outFile = path.join(temp, outFile + ".pdf")
+    print(outFile)
     command.append(outFile)
 
     # Convert file using ImageMagick
@@ -52,7 +55,7 @@ def convert():
 
     # Open pdf file with default editor
     if confirm("Save file", "Do you want to save the pdf to the Desktop?"):
-        outFile2 = path.join(Path.home(), "Desktop", path.basename(getcwd()) + ".pdf")
+        outFile2 = path.join(Path.home(), "Desktop", path.basename(outFile))
         from shutil import copy2
         try:
             copy2(outFile, outFile2)

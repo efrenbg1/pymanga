@@ -8,8 +8,7 @@
             "type": "process",
             "command": "${config:python.pythonPath}\\python.exe",
             "args": [
-                "pymanga.py",
-                "C:\\Users\\efrenbg1\\Downloads\\Again!!!\\Vol 1.rar"
+                "pymanga.py"
             ]
         },
         {
