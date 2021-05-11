@@ -38,7 +38,6 @@ def convert():
     if "." in outFile:
         outFile = outFile.split(".")[0]
     outFile = path.join(temp, outFile + ".pdf")
-    print(outFile)
     command.append(outFile)
 
     # Convert file using ImageMagick
@@ -53,8 +52,8 @@ def convert():
     if response != "":
         fatal("Can't convert to pdf!", response)
 
-    # Open pdf file with default editor
-    if confirm("Save file", "Do you want to save the pdf to the Desktop?"):
+    # Save pdf to Desktop or open with default editor
+    if confirm("Save file", "Do you want to save the pdf to the Desktop?") == "yes":
         outFile2 = path.join(Path.home(), "Desktop", path.basename(outFile))
         from shutil import copy2
         try:

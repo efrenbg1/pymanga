@@ -89,7 +89,8 @@ def selectzip(title):
     global _p
     _p.stop()
     from pathlib import Path
-    answer = filedialog.askopenfilename(title=title, initialdir=str(Path.home()), filetypes=(
+    from os.path import join
+    answer = filedialog.askopenfilename(title=title, initialdir=str(join(Path.home(), "Downloads")), filetypes=(
         ('Archive', '*.zip'),
         ('All files', '*.*')
     ))

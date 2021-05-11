@@ -38,25 +38,26 @@ def read(file):
     except Exception as e:
         fatal("Can't open archive file!", e=e)
 
-    # Find extracted folder
-    from os import chdir, listdir
-    chdir(temp)
-    for folder in listdir():
-        if folder in file:
-            chdir(folder)
+    try:
+        # Find extracted folder
+        from os import chdir, listdir
+        chdir(temp)
 
-    # Get list of files to use for pdf (and those ignored)
-    files = []
-    skipped = []
-    chapters = listdir()
-    chapters.sort(key=_natural_keys)
-    for chapter in chapters:
-        pages = listdir(chapter)
-        pages.sort(key=_natural_keys)
-        for page in pages:
-            if '.jpg' in page or '.png' in page:
-                files.append(chapter + "/" + page)
-            else:
-                skipped.append(chapter + "/" + page)
+        # Get list of files to use for pdf (and those ignored)
+        files = []
+        skipped = []
+        chapters = listdir()
+        chapters.sort(key=_natural_keys)
+        for chapter in chapters:
+            pages = listdir(chapter)
+            pages.sort(key=_natural_keys)
+            for page in pages:
+                if '.jpg' in page or '.png' in page:
+                    files.append(chapter + "/" + page)
+                else:
+                    skipped.append(chapter + "/" + page)
 
-    return files, skipped
+        return files, skipped
+
+    except Exception as e:
+        fatal("Can't read contents of archive file!", e=e)
