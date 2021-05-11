@@ -31,7 +31,7 @@ def paint():
     tpre.pack()
 
     # Main text
-    t = Label(root, text="Cargando...", font=('helvetica', 12, 'bold'))
+    t = Label(root, text="Loading...", font=('helvetica', 12, 'bold'))
     t.pack()
     _label = t
 

@@ -2,16 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "pymanga | .zip to .pdf"
-#define MyAppNameShort "pymanga"
-#define MyAppVersion "0.2"
+#define MyAppVersion "0.1"
 #define MyAppPublisher "efrenbg1"
-#define MyAppURL "https://github.com/efrenbg1/pymanga"
+#define MyAppURL "https://github.com/efrenbg1"
 #define MyAppExeName "pymanga.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{A6B27673-76FA-4C6E-AC0C-279EEE889E3B}
+AppId={{E3017C9F-46C4-4774-B271-7D6CF0C0DE0E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -20,7 +19,6 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\pymanga
-DisableDirPage=yes
 DisableProgramGroupPage=yes
 LicenseFile=C:\Users\efrenbg1\Desktop\pymanga\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
@@ -31,21 +29,9 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 
-[Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
-
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-
 [Files]
-Source: "C:\Users\efrenbg1\Desktop\pymanga\dist\pymanga\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\efrenbg1\Desktop\pymanga\dist\pymanga\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppNameShort}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"
-Name: "{autodesktop}\{#MyAppNameShort}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; WorkingDir: "{app}"
-
-[Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppNameShort, '&', '&&')}}"; Flags: nowait postinstall skipifsilent; WorkingDir: "{app}"
-
+Name: "{group}\PyManga"; Filename: "{app}\pymanga.exe"; WorkingDir: "{app}"
