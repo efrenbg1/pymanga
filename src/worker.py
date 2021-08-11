@@ -80,9 +80,10 @@ def convert():
         # Copy all images in order to root of temp folder
         order = 0
         pages = []
+        fill = len(str(len(files))) + 1
         for file in files:
             order += 1
-            page = str(order) + file[file.rfind('.'):]
+            page = str(order).zfill(fill) + file[file.rfind('.'):]
             copy2(file, page)
             pages.append(page)
 
