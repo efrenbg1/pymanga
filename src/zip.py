@@ -43,7 +43,7 @@ def read(file):
         from os import chdir, listdir
         chdir(temp)
 
-        # Get list of files to use for pdf (and those ignored)
+        # Get list of files to include (and those ignored)
         files = []
         skipped = []
         chapters = listdir()
@@ -56,8 +56,17 @@ def read(file):
                     files.append(chapter + "/" + page)
                 else:
                     skipped.append(chapter + "/" + page)
-
         return files, skipped
 
     except Exception as e:
         fatal("Can't read contents of archive file!", e=e)
+
+
+def create(files, out):
+    from zipfile import ZipFile
+    archive = ZipFile(out, 'w')
+
+    for file in files:
+        archive.write(file)
+
+    archive.close()

@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-from src import ui, imagemagick
-from threading import Thread
+from src import ui, worker
 
 ui.paint()
 
-thread = Thread(target=imagemagick.convert).start()
+worker.start()
 
 ui.loop()

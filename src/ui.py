@@ -65,6 +65,13 @@ def fatal(msg, e=None):
     _exit(1)
 
 
+def success(msg):
+    global _p
+    _p.stop()
+    messagebox.showinfo(message=msg, title=title)
+    _p.start()
+
+
 def confirm(title, msg):
     global _p
     _p.stop()

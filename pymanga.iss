@@ -3,7 +3,7 @@
 
 #define MyAppName "pymanga | .zip to .pdf"
 #define MyAppNameShort "pymanga"
-#define MyAppVersion "0.2"
+#define MyAppVersion "0.3"
 #define MyAppPublisher "efrenbg1"
 #define MyAppURL "https://github.com/efrenbg1/pymanga"
 #define MyAppExeName "pymanga.exe"
