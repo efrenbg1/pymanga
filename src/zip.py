@@ -12,9 +12,6 @@ def _natural_keys(text):
 
 
 def _extract(file):
-    # Clean temp directory
-    clean()
-
     # Extract zip file (if fails prompt for password)
     label("Extracting archive...")
     from zipfile import ZipFile
@@ -22,7 +19,8 @@ def _extract(file):
     password = ""
     while True:
         try:
-            archive.extractall(temp, pwd=bytes(password, 'utf-8'))
+            output = temp + file[file.rfind('/')+1:file.rfind('.')]
+            archive.extractall(output, pwd=bytes(password, 'utf-8'))
             break
         except:
             password = ask("Password", "The file is encrypted and needs a password:")
@@ -31,12 +29,15 @@ def _extract(file):
             pass
 
 
-def read(file):
-    # Extract archive
-    try:
-        _extract(file)
-    except Exception as e:
-        fatal("Can't open archive file!", e=e)
+def read(files):
+    # Clean temp directory
+    clean()
+
+    for file in files:
+        try:
+            _extract(file)
+        except Exception as e:
+            fatal("Can't open archive file!", e=e)
 
     try:
         # Find extracted folder

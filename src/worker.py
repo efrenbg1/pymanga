@@ -33,24 +33,27 @@ def convert():
         fatal("Pymanga is already running on another process!")
 
     # Prompt for archive
-    file = selectzip("Open archive to use:")
+    archives = selectzip("Open archive(s) to use:")
 
     # Extract and read pdf file
-    files, skipped = zip.read(file)
+    files, skipped = zip.read(archives)
     if len(skipped):
         confirm("The following files will not be included:", str(skipped))
 
-    if confirm("Choose format", "Do you want to convert the .cbz to .pdf?") == "yes":
+    # Select output file
+    from pathlib import Path
+    from os.path import commonprefix
+    outFile = path.basename(commonprefix(archives))
+    if "." in outFile:
+        outFile = outFile.split(".")[0]
+
+    if False:  # confirm("Choose format", "Do you want to convert the .cbz to .pdf?") == "yes":
 
         label("Creating .pdf file...")
         command = [imagemagick]
         command.extend(files)
 
-        # Add output file to command
-        from pathlib import Path
-        outFile = path.basename(file)
-        if "." in outFile:
-            outFile = outFile.split(".")[0]
+        # Add extension to output file
         outFile = path.join(temp, outFile + ".pdf")
         command.append(outFile)
 
@@ -70,11 +73,7 @@ def convert():
 
         label("Creating .cbz file...")
 
-        # Choose output filename
-        from pathlib import Path
-        outFile = path.basename(file)
-        if "." in outFile:
-            outFile = outFile.split(".")[0]
+        # Add extension to output file
         outFile = path.join(temp, outFile + ".cbz")
 
         # Copy all images in order to root of temp folder

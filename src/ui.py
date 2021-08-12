@@ -4,7 +4,7 @@ from os import path, _exit
 import sys
 import traceback
 
-title = "pymanga | .zip to .pdf"
+title = "pymanga | .zip to .cbz or .pdf"
 
 # Start window and set icon
 root = Tk()
@@ -97,7 +97,7 @@ def selectzip(title):
     _p.stop()
     from pathlib import Path
     from os.path import join
-    answer = filedialog.askopenfilename(title=title, initialdir=str(join(Path.home(), "Downloads")), filetypes=(
+    answer = filedialog.askopenfilenames(title=title, initialdir=str(join(Path.home(), "Downloads")), filetypes=(
         ('Archive', '*.zip'),
         ('All files', '*.*')
     ))

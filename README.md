@@ -1,5 +1,5 @@
 # pymanga
-Convert .zip to .pdf
+Convert .zip to .cbz or .pdf
 
 ImageMagick can be downloaded from here: https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-7.0.11-9-portable-Q16-x86.zip
 
