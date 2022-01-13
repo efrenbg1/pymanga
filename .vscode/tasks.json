@@ -23,7 +23,7 @@
                 "-y",
                 "--noconsole",
                 "--add-data=app.ico;.",
-                "--add-data=imagemagick/*;imagemagick",
+                //"--add-data=imagemagick/*;imagemagick",
                 "--icon=app.ico",
                 "pymanga.py"
             ]
