@@ -4,7 +4,7 @@ from os import path, _exit
 import sys
 import traceback
 
-title = "pymanga | .zip to .cbz or .pdf"
+title = "pymanga | .zip to .cbz"
 
 # Start window and set icon
 root = Tk()

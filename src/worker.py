@@ -35,7 +35,7 @@ def convert():
     # Prompt for archive
     archives = selectzip("Open archive(s) to use:")
 
-    # Extract and read pdf file
+    # Extract and read zip file
     files, skipped = zip.read(archives)
     if len(skipped):
         confirm("The following files will not be included:", str(skipped))
